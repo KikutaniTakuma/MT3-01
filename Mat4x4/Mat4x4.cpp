@@ -269,12 +269,49 @@ void Mat4x4::Transepose() {
 	std::swap(m[3][1], m[1][3]);
 }
 
+void Mat4x4::PerspectiveFov(float fovY, float aspectRatio, float nearClip, float farClip) {
+	m = { 0.0f };
+
+	m[0][0] = (1.0f / aspectRatio) * (1.0f / std::tan(fovY / 2.0f));
+	m[1][1] = 1.0f / std::tan(fovY / 2.0f);
+	m[2][2] = farClip / (farClip - nearClip);
+	m[2][3] = 1.0f;
+	m[3][2] = (-nearClip * farClip) / (farClip - nearClip);
+
+}
+
+void Mat4x4::Orthographic(float left, float top, float right, float bottom, float nearClip, float farClip) {
+	m = { 0.0f };
+
+	m[0][0] = 2.0f / (right - left);
+	m[1][1] = 2.0f / (top - bottom);
+	m[2][2] = 1.0f / (farClip - nearClip);
+	m[3][3] = 1.0f;
+
+	m[3][0] = (left + right) / (left - right);
+	m[3][1] = (top + bottom) / (bottom - top);
+	m[3][2] = nearClip / (nearClip - farClip);
+}
+
+void Mat4x4::ViewPort(float left, float top, float width, float height, float minDepth, float maxDepth) {
+	m = { 0.0f };
+
+	m[0][0] = width / 2.0f;
+	m[1][1] = height/ -2.0f;
+	m[2][2] = maxDepth - minDepth;
+	m[3][3] = 1.0f;
+
+	m[3][0] = left + (width / 2.0f);
+	m[3][1] = top + (height / 2.0f);
+	m[3][2] = minDepth;
+}
+
 
 void MatrixScreenPrintf(int x, int y, const Mat4x4& mat, std::string msg) {
 	Novice::ScreenPrintf(x + 10, y, msg.c_str());
 	for (int row = 0; row < 4; ++row) {
 		for (int column = 0; column < 4; ++column) {
-			Novice::ScreenPrintf(x + column * kColumnWidth, y + (row+1) * kRowheight, "%6.02f", mat.m[row][column]);
+			Novice::ScreenPrintf(x + column * kColumnWidth, y + (row+1) * kRowHeight, "%6.02f", mat.m[row][column]);
 		}
 	}
 }
@@ -342,6 +379,30 @@ Mat4x4 MakeMatrixAffin(const Vector3D& scale, const Vector3D& rad, const Vector3
 	Mat4x4 tmp;
 
 	tmp.Affin(scale, rad, translate);
+
+	return tmp;
+}
+
+Mat4x4 MakeMatrixPerspectiveFov(float fovY, float aspectRatio, float nearClip, float farClip) {
+	Mat4x4 tmp;
+
+	tmp.PerspectiveFov(fovY, aspectRatio, nearClip, farClip);
+
+	return tmp;
+}
+
+Mat4x4 MakeMatrixOrthographic(float left, float right, float top, float bottom, float nearClip, float farClip) {
+	Mat4x4 tmp;
+
+	tmp.Orthographic(left, right, top, bottom, nearClip, farClip);
+
+	return tmp;
+}
+
+Mat4x4 MakeMatrixViewPort(float left, float top, float width, float height, float minDepth, float maxDepth) {
+	Mat4x4 tmp;
+
+	tmp.ViewPort(left, top, width, height, minDepth, maxDepth);
 
 	return tmp;
 }

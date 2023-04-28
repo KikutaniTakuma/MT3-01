@@ -3,7 +3,7 @@
 #include <array>
 #include <string>
 
-static const int kRowheight = 20;
+static const int kRowHeight = 20;
 static const int kColumnWidth = 60;
 
 class Vector3D;
@@ -111,6 +111,38 @@ public:
 	/// </summary>
 	void Transepose();
 
+	/// <summary>
+	/// 投資投影
+	/// </summary>
+	/// <param name="fov"></param>
+	/// <param name="aspectRatio"></param>
+	/// <param name="nearClip"></param>
+	/// <param name="farClip"></param>
+	void PerspectiveFov(float fovY, float aspectRatio, float nearClip, float farClip);
+
+	/// <summary>
+	/// 正射影
+	/// </summary>
+	/// <param name="left"></param>
+	/// <param name="right"></param>
+	/// <param name="top"></param>
+	/// <param name="bottom"></param>
+	/// <param name="nearClip"></param>
+	/// <param name="farClip"></param>
+	void Orthographic(float left, float right, float top, float bottom, float nearClip, float farClip);
+
+	/// <summary>
+	/// ビューポート
+	/// </summary>
+	/// <param name="left"></param>
+	/// <param name="right"></param>
+	/// <param name="top"></param>
+	/// <param name="bottom"></param>
+	/// <param name="minDepth"></param>
+	/// <param name="maxDepth"></param>
+	void ViewPort(float left, float top, float width, float height, float minDepth, float maxDepth);
+
+
 	
 	friend void MatrixScreenPrintf(int x, int y, const Mat4x4& mat, std::string msg);
 };
@@ -180,3 +212,34 @@ Mat4x4 MakeMatrixInverse(Mat4x4 mat);
 /// <param name="mat">転置行列にしたい行列</param>
 /// <returns>引数の転置行列</returns>
 Mat4x4 MakeMatrixTransepose(Mat4x4 mat);
+
+/// <summary>
+	/// 投資投影
+	/// </summary>
+	/// <param name="fov"></param>
+	/// <param name="aspectRatio"></param>
+	/// <param name="nearClip"></param>
+	/// <param name="farClip"></param>
+Mat4x4 MakeMatrixPerspectiveFov(float fovY, float aspectRatio, float nearClip, float farClip);
+
+/// <summary>
+/// 正射影
+/// </summary>
+/// <param name="left"></param>
+/// <param name="right"></param>
+/// <param name="top"></param>
+/// <param name="bottom"></param>
+/// <param name="nearClip"></param>
+/// <param name="farClip"></param>
+Mat4x4 MakeMatrixOrthographic(float left, float top, float right, float bottom, float nearClip, float farClip);
+
+/// <summary>
+/// ビューポート
+/// </summary>
+/// <param name="left"></param>
+/// <param name="right"></param>
+/// <param name="top"></param>
+/// <param name="bottom"></param>
+/// <param name="minDepth"></param>
+/// <param name="maxDepth"></param>
+Mat4x4 MakeMatrixViewPort(float left, float top, float width, float height, float minDepth, float maxDepth);
