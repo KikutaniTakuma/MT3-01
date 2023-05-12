@@ -69,7 +69,7 @@ Vector3D Vector3D::operator*(const Mat4x4& mat) {
 	return result;
 }
 
-Vector3D& Vector3D::operator=(const Mat4x4& mat) {
+Vector3D& Vector3D::operator*=(const Mat4x4& mat) {
 	*this = *this * mat;
 
 	return *this;
