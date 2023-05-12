@@ -16,12 +16,12 @@ Vector3D::Vector3D(float x, float y, float z) {
 	this->z = z;
 }
 
-Vector3D Vector3D::operator+(const Vector3D& vec) {
+Vector3D Vector3D::operator+(const Vector3D& vec) const {
 	Vector3D tmp(x + vec.x, y + vec.y, z + vec.z);
 
 	return tmp;
 }
-Vector3D Vector3D::operator-(const Vector3D& vec) {
+Vector3D Vector3D::operator-(const Vector3D& vec) const {
 	Vector3D tmp(x - vec.x, y - vec.y, z - vec.z);
 
 	return tmp;
@@ -37,7 +37,7 @@ Vector3D Vector3D::operator-=(const Vector3D& vec) {
 	return *this;
 }
 
-Vector3D Vector3D::operator*(float scalar) {
+Vector3D Vector3D::operator*(float scalar) const {
 	Vector3D tmp(x * scalar, y * scalar, z * scalar);
 
 	return tmp;
@@ -54,7 +54,7 @@ Vector3D Vector3D::Normalize() {
 	return Vector3D(x / nor, y / nor, z / nor);
 }
 
-Vector3D Vector3D::operator*(const Mat4x4& mat) {
+Vector3D Vector3D::operator*(const Mat4x4& mat) const {
 	Vector3D result;
 
 	result.x = x * mat.get()[0][0] + y * mat.get()[1][0] + z * mat.get()[2][0] + 1.0f * mat.get()[3][0];
@@ -79,8 +79,18 @@ float Vector3D::Length() {
 	return sqrtf(powf(x,2.0f)+ powf(y, 2.0f)+ powf(z, 2.0f));
 }
 
-float Vector3D::Dot(const Vector3D& vec) {
+float Vector3D::Dot(const Vector3D& vec) const {
 	return x * vec.x + y * vec.y + z * vec.z;
+}
+
+Vector3D Vector3D::Cross(const Vector3D& vec) const {
+	Vector3D result;
+
+	result.x = y * vec.z - z * vec.y;
+	result.y = z * vec.x - x * vec.z;
+	result.z = x * vec.y - y * vec.x;
+
+	return result;
 }
 
 void Vec3ScreenPrintf(int x, int y, const Vector3D& vec, std::string label) {

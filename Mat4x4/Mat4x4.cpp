@@ -277,7 +277,6 @@ void Mat4x4::PerspectiveFov(float fovY, float aspectRatio, float nearClip, float
 	m[2][2] = farClip / (farClip - nearClip);
 	m[2][3] = 1.0f;
 	m[3][2] = (-nearClip * farClip) / (farClip - nearClip);
-
 }
 
 void Mat4x4::Orthographic(float left, float top, float right, float bottom, float nearClip, float farClip) {
